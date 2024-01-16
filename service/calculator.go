@@ -39,13 +39,15 @@ func (c *calculator) Execute(req domain.CalculatorReq) domain.CalculatorRes {
 func (c *calculator) FindPrice(carts []domain.CartItemReq, promotions []domain.PromotionsPerProductPrice) []domain.CartItem {
 	result := []domain.CartItem{}
 	for _, item := range carts {
-		data := domain.CartItem{}
+
 		product := domain.ProductMaster[item.Name]
 		if product.Name == item.Name {
 			price := float32(item.Count) * product.Price
-			data.Product = product
-			data.Price = price
-			data.Count = item.Count
+			data := domain.CartItem{
+				Product: product,
+				Price:   price,
+				Count:   item.Count,
+			}
 
 			for _, promotion := range promotions {
 				data = promotion(data)
